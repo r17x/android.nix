@@ -51,6 +51,9 @@
 
         overlays = [
           android.overlays.default
+          (final: prev: {
+            android-studio = prev.lib.optionals prev.stdenv.isDarwin (prev.callPackage ./android.dmg.nix { });
+          })
           (final: prev: rec {
             jdk = pkgs."jdk${toString javaVersion}";
             gradle = prev.gradle.override {
