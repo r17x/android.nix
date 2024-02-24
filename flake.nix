@@ -73,7 +73,10 @@
           })
         ];
 
-        pkgs = import nixpkgs { inherit overlays system; };
+        pkgs = import nixpkgs {
+          inherit overlays system;
+          config.allowUnfree = true;
+        };
 
         scripts = let emulator = createEmulator pkgs; in
           with pkgs; [
@@ -100,7 +103,6 @@
                 - ndk:                ${androidNDKVersion}
 
               Command available:
-                - start:            start the project 🛹
                 - create-emulator:  create emulator (default: android)
                 - align-emulator:   align dev environment with AVD configurations
                 - gen-properties:   generate local.properties in <currentDir>/android
@@ -178,6 +180,9 @@
           shellHook = ''
             helpme
           '';
+        };
+        devShells.androidStudio = pkgs.mkShell {
+          buildInputs = [ pkgs.android-studio ];
         };
       });
 }
